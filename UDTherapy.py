@@ -16,53 +16,77 @@ from sys import platform
 
 color = { 'PURPLE':'\033[95m', 'CYAN':'\033[96m', 'DARKCYAN':'\033[36m', 'BLUE':'\033[94m', 'GREEN':'\033[92m', 'YELLOW':'\033[93m', 'RED':'\033[91m', 'BOLD':'\033[1m', 'UNDERLINE':'\033[4m', 'END':'\033[0m' }
 
-def clean(s):
-    s = "\n     ".join(s.split("<br/><br/>"))
-    s = re.sub(re.compile('<.*?>'), '', s)
-    s = html.unescape(html.unescape(s))
-    if '\n' not in s:
-        s = '\n     '.join(textwrap.wrap(s, 75, break_long_words=False))
-    if '\"\"' in s:
-        s = '\"'.join(s.split('\"\"'))
-    return s
-
-def format(s):
+def form(s):
     if "win" in platform:
-        s[0] = 'Word:'+str(s[0])
-        s[1] = 'Def:'+str(s[1])
-        s[2] = 'Ex:'+str(s[2])
+        s[0] = 'Word: '+str(s[0])
+        s[1] = 'Def: '+str(s[1])
+        s[2] = 'Ex: '+str(s[2])
         return s
     elif "linux" in platform or "darwin" in platform:
-        # need to test OS X
+        # need to test compatability on OS X
         s[0] = color['PURPLE']+'Word: '+color['END']+s[0]
         s[1] = color['YELLOW']+'Def: '+color['END']+s[1]
         s[2] = color['DARKCYAN']+'Ex: '+color['END']+s[2]
         return s
 
-def scrape(soup, index):
+def clean(s):
+    s = '\n     '.join(s.split('<br/><br/>'))
+    s = re.sub(re.compile('<.*?>'), '', s)
+    s = html.unescape(html.unescape(s))
+    if '\n' not in s:
+        s = '\n     '.join(textwrap.wrap(s, 70, break_long_words=False))
+    if '\"\"' in s:
+        s = '\"'.join(s.split('\"\"'))
+    return s
+
+def scrape(url, index):
+    page = urllib.request.urlopen(urllib.request.Request(url))
+    soup = BeautifulSoup(page, "html.parser")
     term = []
     term.append(re.findall(r'<a class="word" href=\"(.*?)\">(.*?)</a>', str(soup.findAll('a')))[index][1].capitalize()) # Word
-    term.append(clean(re.compile(r'<div class=\"meaning\">(.*?)</div>', re.S).findall(str(soup.findAll('div')).replace('\n', ''))[index].capitalize())) # Definition
+    term.append(clean(re.compile(r'<div class=\"meaning\">(.*?)</div>', re.S).findall(str(soup.findAll('div')).replace('\n', ''))[index].split('<br/> <br/>')[-1]).capitalize()) # Definition
     term.append(clean('\"'+re.compile(r'<div class=\"example\">(.*?)</div>', re.S).findall(str(soup.findAll('div')))[index]+'\"')) # Example
     return term
 
-def main():
+def main(args):
     url = "https://www.urbandictionary.com/"
-    page = urllib.request.urlopen(urllib.request.Request(url))
-    soup = BeautifulSoup(page, "html.parser")
-    print('')
-    if len(sys.argv) <= 1:
-        term = scrape(soup, random.randint(0,6))
-        for line in format(term):
-            print(line)
-        print('')
-    elif len(sys.argv) > 1:
-        if '-a' in sys.argv[1] or '--all' in sys.argv[1]:
+    if len(args) == 0:
+        term = scrape(url, random.randint(0,6))
+    elif len(args) >= 1:
+        if '-s' in args or '--search' in args:
+            if len(args) >= 2:
+                url += 'define.php?term='+args[-1]
+                term = form(scrape(url, random.randint(0,6)))
+            else:
+                print('**ERROR**: The '+args[0]+' argument requires that you specific a search term.')
+                sys.exit()
+
+        if '-a' in args or '--all' in args:
+            term = []
             for i in range(0,6):
-                for line in format(scrape(soup, i)):
-                    print(line)
-                print('')
+                term.append(form(scrape(url, i)))
+
+        elif '-h' in args[0] or '--help' in args[0]:
+            f = '     {0:15} {1:75}'
+            print('\n   Arguments:')
+            print(f.format('-s or --search:', 'Prints a definition for the specified <term>'))
+            print(f.format('-a or --all:', 'Prints the entire page of definitions'))
+            print(f.format('-h or --help:', 'Prints a list of accepted arguments and their functionality'))
+            print('')
+            sys.exit()
+        else:
+            print('**ERROR**: One or more of the arguments specified are not valid modifiers.')
+            sys.exit()
+
+    for line in term:
+        if type(line) is not list:
+            print(form(line))
+        else:
+            print('')
+            for n in line:
+                print(n)
+    print('')
     sys.exit()
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
