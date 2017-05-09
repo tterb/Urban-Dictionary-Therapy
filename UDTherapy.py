@@ -48,6 +48,7 @@ def scrape(url, index):
     term.append(clean('\"'+re.compile(r'<div class=\"example\">(.*?)</div>', re.S).findall(str(soup.findAll('div')).replace('\n', ''))[index]+'\"')) # Example
     return term
 
+
 def main(args):
     url = "https://www.urbandictionary.com/"
     if len(args) == 0:
@@ -56,15 +57,33 @@ def main(args):
         if '-s' in args or '--search' in args:
             if len(args) >= 2:
                 url += 'define.php?term='+args[-1]
-                term = form(scrape(url, random.randint(0,6)))
+                if '-a' in args or '--all' in args:
+                    term = []
+                    for i in range(0,6):
+                        term.append(form(scrape(url, i)))
+                else:
+                    term = form(scrape(url, random.randint(0,6)))
             else:
-                print('**ERROR**: The '+args[0]+' argument requires that you specific a search term.')
+                print("**ERROR**: The 's' argument requires that you specify a search term.")
                 sys.exit()
-
-        if '-a' in args or '--all' in args:
+        # elif '-l' in args or '--letter' in args:
+        #     if len(args) >= 2:
+        #         url += 'popular.php?character='+args[-1].upper()
+        #         if '-a' in args or '--all' in args:
+        #             term = []
+        #             for i in range(0,6):
+        #                 term.append(form(scrape(url, i)))
+        #         else:
+        #             term = form(scrape(url, random.randint(0,6)))
+        #     else:
+        #         print("**ERROR**: The '-l' argument requires that you specify an additional argument.")
+        #         sys.exit()
+        elif len(args) == 1 and ('-a' in args or '--all' in args):
             term = []
             for i in range(0,6):
                 term.append(form(scrape(url, i)))
+        elif len(args) == 1 and '-wotd' in args:
+            term = form(scrape(url, 0))
 
         if '-h' in args[0] or '--help' in args[0]:
             f = '     {0:15} {1:75}'
@@ -73,11 +92,7 @@ def main(args):
             print(f.format('-a or --all:', 'Prints the entire page of definitions'))
             print(f.format('-h or --help:', 'Prints a list of accepted arguments and their functionality'))
             print('')
-            sys.exit()
-        # else:
-        #     print('**ERROR**: One or more of the arguments specified are not valid modifiers.')
-        #     sys.exit()
-
+    print('')
     for line in term:
         if type(line) is not list:
             print(line)
