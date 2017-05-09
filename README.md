@@ -1,27 +1,28 @@
-[<img src="https://cloud.githubusercontent.com/assets/16360374/25799898/d2fe937e-339b-11e7-81a5-b70a54b580d9.png" height="100"/>]()  
-------  
-#### A simple rehabilitation program for coping with those long frustrating days of programming  
+[<img src="https://cloud.githubusercontent.com/assets/16360374/25799898/d2fe937e-339b-11e7-81a5-b70a54b580d9.png" height="100"/>]()
+------
+#### A simple rehabilitation program for coping with those long frustrating days of programming
 
 <br>
 <p align="center">
   <img src="https://cloud.githubusercontent.com/assets/16360374/25802132/cfcd58de-33a5-11e7-8cf8-81f18f6f7af8.png" width="750"/>
-</p>  
+</p>
 
-## Description:  
-***Urban Dictionary Therapy*** is a simple command-line rehabilitation program for coping with those long frustrating days of programming. Utilizing this program and the information generously donated by the online community, you too can return to your work as a more successful, functioning member of society.  
+## Description:
+***Urban Dictionary Therapy*** is a simple command-line rehabilitation program for coping with those long frustrating days of programming. Utilizing this program and the information generously donated by the online community, you too can return to your work as a more successful, functioning member of society.
 <br>
 
 | Arguments          |                                                             |
 |---------------|-------------------------------------------------------------|
 | ```-s``` or ```--seach``` |          Prints a definition for the specified term         |
 |  ```-a``` or ```--all```  |              Prints a whole page of definitions             |
+|        ```-wotd```        |              Prints the "*Word of the Day*"       |
 |  ```-h``` or ```--help``` | Prints a list of accepted arguments and their functionality |
 <br>
 
-------  
+------
 
 ## Setup:
-This package requires that you have Python3, as well as BeautifulSoup4. On OS X and Linux systems Python3 should be installed by default. Once Python is installed you can download BeautifulSoup with the command:  
+This package requires that you have Python3, as well as BeautifulSoup4. On OS X and Linux systems Python3 should be installed by default. Once Python is installed you can download BeautifulSoup with the command:
 ```
 >$ pip3 install bs4
 ```
