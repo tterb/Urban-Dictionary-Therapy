@@ -65,7 +65,7 @@ def main(args):
                         data = scrape(url, i)
                         if data != None:
                             term.append(form(data))
-                        elif index > 1:
+                        elif index > 0:
                             sys.exit()
                         else:
                             print("I'm sorry, there is no data for the given term")
