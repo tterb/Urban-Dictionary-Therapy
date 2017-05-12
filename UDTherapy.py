@@ -52,34 +52,34 @@ def scrape(url, index):
 
 
 def main(args):
+    index = 6
     url = "https://www.urbandictionary.com/"
     if len(args) == 0:
-        term = form(scrape(url, random.randint(0,6)))
+        term = form(scrape(url, random.randint(0,index)))
     elif len(args) >= 1:
         if '-s' in args or '--search' in args:
-            if len(args) >= 2:
+            if len(args) == 2:
                 url += 'define.php?term='+args[-1]
-                if '-a' in args or '--all' in args:
-                    term = []
-                    for i in range(0,6):
-                        data = scrape(url, i)
-                        if data != None:
-                            term.append(form(data))
-                        elif index > 0:
-                            sys.exit()
-                        else:
-                            print("I'm sorry, there is no data for the given term")
-                            sys.exit()
-                else:
-                    index = 6
+                term = scrape(url, random.randint(0,index))
+                while term == None:
+                    index = int(index/2)
                     term = scrape(url, random.randint(0,index))
-                    while term == None:
-                        index = int(index/2)
-                        term = scrape(url, random.randint(0,index))
-                        if index == 0:
-                            print("I'm sorry, there is no data for the given term")
-                            sys.exit()
-                    term = form(term)
+                    if index == 0:
+                        print("I'm sorry, there is no data for the given term")
+                        sys.exit()
+                term = form(term)
+            elif len(args) > 2 and '-a' in args or '--all' in args:
+                url += 'define.php?term='+args[-1]
+                term = []
+                for i in range(0,index):
+                    data = scrape(url, i)
+                    if data != None:
+                        term.append(form(data))
+                    elif index > 0:
+                        sys.exit()
+                    else:
+                        print("I'm sorry, there is no data for the given term")
+                        sys.exit()
             else:
                 print("**ERROR**: The 's' argument requires that you specify a search term.")
                 sys.exit()
@@ -97,7 +97,7 @@ def main(args):
         #         sys.exit()
         elif len(args) == 1 and ('-a' in args or '--all' in args):
             term = []
-            for i in range(0,6):
+            for i in range(0,index):
                 term.append(form(scrape(url, i)))
         elif len(args) == 1 and '-wotd' in args:
             term = form(scrape(url, 0))
@@ -109,6 +109,7 @@ def main(args):
             print(f.format('-a or --all:', 'Prints the entire page of definitions'))
             print(f.format('-h or --help:', 'Prints a list of accepted arguments and their functionality'))
             print('')
+
     print('')
     for line in term:
         if type(line) is not list:
