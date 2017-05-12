@@ -23,7 +23,7 @@ No matter what the issue, ***Urban Dictionary Therapy*** provides a perfect answ
 
 <br>
 
-------
+------------------------------------------------------------------------------  
 
 ## Setup:
 This package requires that you have Python3, as well as BeautifulSoup4. On OS X and Linux systems Python3 should be installed by default. Once Python is installed you can download BeautifulSoup with the command:
