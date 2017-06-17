@@ -4,12 +4,13 @@
 
 <br>
 <p align="center">
-  <img src="https://cloud.githubusercontent.com/assets/16360374/25802132/cfcd58de-33a5-11e7-8cf8-81f18f6f7af8.png" width="750"/>
+  <img src="https://cloud.githubusercontent.com/assets/16360374/25802132/cfcd58de-33a5-11e7-8cf8-81f18f6f7af8.png" width="800"/>
 </p>
 
-## Description:
+# Description:
 ***Urban Dictionary Therapy*** is a simple command-line rehabilitation program for coping with those long frustrating days of programming. Utilizing this program and the information generously donated by the online community, you too can return to your work as a more successful, functioning member of society. More importantly, Urban Dictionary Therapy provides you with the much needed liberation without the temptations that come with opening up a new tab in your browser.  
-Though, this is only one of the many wonderful ways this package can benefit your life. Maybe you're looking for a substitute for the obligatory ```fortune``` package in your command-line greeting or just simply looking for a way to expand your vocabulary?  
+Though, this is only one of the many wonderful ways this package can benefit your life.  
+Maybe you're looking for a substitute for the obligatory ```fortune``` package in your command-line greeting or just simply looking for a way to expand your vocabulary?  
 No matter what the issue, ***Urban Dictionary Therapy*** provides a perfect answer to all your woes.
 
 <br>
@@ -23,11 +24,20 @@ No matter what the issue, ***Urban Dictionary Therapy*** provides a perfect answ
 
 <br>
 
-------------------------------------------------------------------------------  
+------------------------------------------------------------------------------
 
-## Setup:
-This package requires that you have Python3, as well as BeautifulSoup4. On OS X and Linux systems Python3 should be installed by default. Once Python is installed you can download BeautifulSoup with the command:
+# Setup:
+This package requires that you have **Python3** and **BeautifulSoup4** installed. If not installed, these dependencies can be installed via the following commands:
+
+**Debian-based:**
+```shell
+$ sudo apt-get install python3 && sudo apt-get install python3-bs4
 ```
->$ pip3 install bs4
+**OS X:**
+```shell
+$ brew install python3
+$ sudo pip3 install beautifulsoup4
 ```
-***Note:*** To my knowledge, Python3 is also installed by default with the new **Bash on Windows** linux-subsystem for Windows 10.
+<br>
+
+***Note:*** The aforementioned *Debian-based* approach will also work with the new **Bash on Windows** linux-subsystem for Windows 10.
