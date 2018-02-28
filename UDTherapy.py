@@ -100,7 +100,7 @@ def clean(term):
   term = html.unescape(html.unescape(term))
   if '\n' not in term:
     term = '\n      '.join(textwrap.wrap(term, 60, break_long_words=False))
-  if '\"\"' in s:
+  if '\"\"' in term:
     term = '\"'.join(term.split('\"\"'))
   return term
 
