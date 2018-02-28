@@ -15,56 +15,48 @@ from argparse import ArgumentParser
 from bs4 import BeautifulSoup
 from urllib import request
 from random import randint
+from colorama import init, Fore, Style
 
-color = { 'PURPLE':'\033[95m', 'CYAN':'\033[96m', 'DARKCYAN':'\033[36m', 'BLUE':'\033[94m', 'GREEN':'\033[92m', 'YELLOW':'\033[93m', 'RED':'\033[91m', 'BOLD':'\033[1m', 'UNDERLINE':'\033[4m', 'END':'\033[0m' }
 
 def main():
+  init()
   parser = ArgumentParser(description='A simple rehabilitation program for coping with those long frustrating days of programming')
   parser.add_argument('-s', '--search', help='Returns the definition for the provided term')
   parser.add_argument('-n', '--num', type=int, help='Returns (n) definitions for the provided term')
-  parser.add_argument('-a', '--all', action='store_true', help='Returns all definitions for the provided term')
+  parser.add_argument('-a', '--all', action='store_true', help='Returns the first page of definitions for the provided term')
   parser.add_argument('-w', '--wotd', action='store_true', help='Returns the definition for the word of the day')
   args = parser.parse_args()
-
-  url = "https://www.urbandictionary.com/"
+  
   term = []
-  if args.num:
+  index = 6
+  url = "https://www.urbandictionary.com/"
+  if args.num and args.num < 6:
     index = args.num
-  else:
-    index = 6
   if args.wotd:
-    term.append(form(scrape(url, 0)))
+    term.append(scrape(url, 0))
   elif args.search:
     url += 'define.php?term='+args.search
     if args.all or args.num:
-      for i in range(0,index):
-        data = scrape(url, i)
-        if data != None:
-          term.append(form(data))
-        elif index > 0:
-          sys.exit()
-        else:
-          print("I'm sorry, there is no data for the given term")
-          sys.exit()
+        for i in range(index):
+          data = scrape(url, i)
+          if data != None:
+            term.append(data)
+          else:
+            print("I'm sorry, there is no data for the given term")
+            sys.exit()
     else:
-      term = scrape(url, randint(0,index))
-      while term == None:
+      term.append(scrape(url, randint(0,index)))
+      while len(term) == 0:
         index = index//2
-        term = scrape(url, randint(0,index))
+        term.append(scrape(url, randint(0,index)))
         if index == 0:
           print("I'm sorry, there is no data for the given term")
           sys.exit()
-      term = form(term)
   elif args.all or args.num:
-    for i in range(0,index):
-      term.append(form(scrape(url, i)))
+    [term.append(scrape(url, i)) for i in range(0,index)]
   else: 
-    term.append(form(scrape(url, randint(0,index))))
-    
-  for line in term:
-    print(line)
-  print('')
-  sys.exit()
+    term.append(scrape(url, randint(0,index)))
+  [print(form(line)) for line in term]
 
 
 def scrape(url, index):
@@ -79,17 +71,12 @@ def scrape(url, index):
   return term
   
 
-""" Formats the program output """
+""" Formats and colors program output """
 def form(term):
-  if "win" in sys.platform:
-    term[0] = '\nWord: '+str(term[0])
-    term[1] = 'Def: '+str(term[1])
-    term[2] = 'Ex: '+str(term[2])
-  elif "linux" or "darwin" in sys.platform:
-    # need to test compatability on macOS
-    term[0] = color['PURPLE']+' \nWord: '+color['END']+term[0]
-    term[1] = color['YELLOW']+' Def: '+color['END']+term[1]
-    term[2] = color['DARKCYAN']+' Ex: '+color['END']+term[2]
+  if "linux" or "darwin" in sys.platform:
+    term[0] = Fore.MAGENTA+' \nWord: '+Style.RESET_ALL+term[0]
+    term[1] = Fore.YELLOW+' Def: '+Style.RESET_ALL+term[1]
+    term[2] = Fore.CYAN+' Ex: '+Style.RESET_ALL+term[2]
   return '\n'.join(term)
 
 
