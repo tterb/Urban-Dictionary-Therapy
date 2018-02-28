@@ -98,10 +98,10 @@ def clean(term):
   term = '\n      '.join(term.split('<br/><br/>'))
   term = re.sub(re.compile('<.*?>'), '', term)
   term = html.unescape(html.unescape(term))
-  if '\n' not in s:
+  if '\n' not in term:
     term = '\n      '.join(textwrap.wrap(term, 60, break_long_words=False))
   if '\"\"' in s:
-    term = '\"'.join(s.split('\"\"'))
+    term = '\"'.join(term.split('\"\"'))
   return term
 
 
