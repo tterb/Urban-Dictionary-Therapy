@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #!C:/Python36/python3
-# UrbanDicTherapy.py
+# UDTherapy.py
 
 #*****************************************************************
 # Urban Dictionary Therapy is a simple rehabilitation program for
@@ -26,7 +26,7 @@ def main():
   parser.add_argument('-a', '--all', action='store_true', help='Returns the first page of definitions for the provided term')
   parser.add_argument('-w', '--wotd', action='store_true', help='Returns the definition for the word of the day')
   args = parser.parse_args()
-  
+
   term = []
   index = 6
   url = "https://www.urbandictionary.com/"
@@ -54,7 +54,7 @@ def main():
           sys.exit()
   elif args.all or args.num:
     [term.append(scrape(url, i)) for i in range(0,index)]
-  else: 
+  else:
     term.append(scrape(url, randint(0,index)))
   [print(form(line)) for line in term]
 
@@ -69,7 +69,7 @@ def scrape(url, index):
   term.append(clean(re.compile(r'<div class=\"meaning\">(.*?)</div>', re.S).findall(str(soup.findAll('div')).replace('\n', ''))[index].split('<br/> <br/>')[-1]).capitalize()) # Definition
   term.append(clean('\"'+re.compile(r'<div class=\"example\">(.*?)</div>', re.S).findall(str(soup.findAll('div')).replace('\n', ''))[index]+'\"')) # Example
   return term
-  
+
 
 """ Formats and colors program output """
 def form(term):
@@ -84,6 +84,7 @@ def form(term):
 def clean(term):
   term = '\n      '.join(term.split('<br/><br/>'))
   term = re.sub(re.compile('<.*?>'), '', term)
+  term = term.replace('&amp;apos', '\'')
   term = html.unescape(html.unescape(term))
   if '\n' not in term:
     term = '\n      '.join(textwrap.wrap(term, 60, break_long_words=False))
