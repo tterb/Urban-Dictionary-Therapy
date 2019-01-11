@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+#!C:/Python36/python3
+
+"""
+Urban Dictionary Therapy
+A simple rehabilitation program for coping with long days of programming.
+Utilizing this program and the information generously donated by the online
+community, you too can return to your work as a more successful, functioning
+member of society.
+bin/UDTherapy
+Brett Stevenson (c) 2017
+"""
+
+import sys, colorama
+from random import randrange
+from UDTherapy import helper
+
+def main(args):
+  colorama.init()
+  args = helper.parse_options(args)
+  url = helper.generate_url(args)
+  term, count = list(), args.num
+  if args.num < 0:
+    count = 0 
+  elif args.all or args.num > 6:
+    count = 6
+  if args.wotd:
+    term.append(helper.scrape_term(url, 0))
+  elif args.all or args.num > 1:
+    [term.append(helper.scrape_term(url, i)) for i in range(0, count)]
+  else:
+    term.append(helper.scrape_term(url, randrange(6)))
+  if not len(term) and args.search:
+    print('I\'m sorry, there is no data for the given term')
+    sys.exit()
+  [print(helper.format(line)) for line in term]
+
+
+if __name__ == '__main__':
+  main(sys.argv[1:])
