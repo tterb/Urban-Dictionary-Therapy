@@ -66,7 +66,7 @@ def clean(term):
 """ Formats and colors program output """
 def format(term):
   if 'linux' or 'darwin' in sys.platform:
-    term[0] = Fore.GREEN+' Word: '+Style.RESET_ALL+term[0]
-    term[1] = Fore.YELLOW+' Def: '+Style.RESET_ALL+term[1]
-    term[2] = Fore.CYAN+' Ex: '+Style.RESET_ALL+term[2]
+    term[0] = Fore.RED+' Word: '+Style.RESET_ALL+term[0]
+    term[1] = Fore.CYAN+' Def: '+Style.RESET_ALL+term[1]
+    term[2] = Fore.YELLOW+' Ex: '+Style.RESET_ALL+term[2]
   return '\n'.join(term)+'\n'
