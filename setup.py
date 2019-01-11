@@ -5,14 +5,14 @@ with open('README.md') as f:
 
 setuptools.setup(
   name = 'UDTherapy',
-  version = '1.0.0',
+  version = '1.0.1',
   description = 'A simple rehabilitation program for coping with long days of programming',
   long_description=long_description,
   long_description_content_type="text/markdown",
   author = 'Brett Stevenson',
   author_email = 'bstevensondev@gmail.com',
   url = 'https://github.com/tterb/Urban-Dictionary-Therapy',
-  download_url = 'https://github.com/tterb/Urban-Dictionary-Therapy/archive/1.0.0.tar.gz',
+  download_url = 'https://github.com/tterb/Urban-Dictionary-Therapy/archive/1.0.1.tar.gz',
   keywords = ['urban', 'dictionary', 'therapy', 'funny', 'entertainment', 'cli'],
   packages = setuptools.find_packages(),
   scripts=['bin/UDTherapy'],
@@ -20,7 +20,7 @@ setuptools.setup(
   tests_require=['pytest'],
   install_requires=[
     'colorama==0.4.1',
-    'beautifulsoup4==4.6.3',
+    'beautifulsoup4==4.7.1',
   ],
   classifiers = [
     'Development Status :: 4 - Beta',
