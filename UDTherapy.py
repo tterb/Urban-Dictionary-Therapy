@@ -22,15 +22,17 @@ def main(args):
   init()
   args = parse_options(args)
   url = generate_url(args)
-  term, index = list(), args.num
-  if args.num and args.num < 6:
-    index = args.num
+  term, count = list(), args.num
+  if args.num < 0:
+    count = 0 
+  elif args.num > 6:
+    count = 6
   if args.wotd:
     term.append(scrape_term(url, 0))
-  elif args.all or args.num:
-    [term.append(scrape_term(url, i)) for i in range(0, index)]
+  elif args.all or args.num > 1:
+    [term.append(scrape_term(url, i)) for i in range(0, count)]
   else:
-    term.append(scrape_term(url, randrange(index)))
+    term.append(scrape_term(url, randrange(6)))
   if not len(term) and args.search:
     print('I\'m sorry, there is no data for the given term')
     sys.exit()
@@ -41,7 +43,7 @@ def main(args):
 def parse_options(args):
   parser = argparse.ArgumentParser(prog='Urban Dictionary Therapy', description='A simple rehabilitation program for coping with long days', usage='%(prog)s [options]', add_help=True)
   parser.add_argument('-s', '--search', nargs='+', help='display the definition for the provided term', default='')
-  parser.add_argument('-n', '--num', type=int, help='specify the number of definitions to display', default=6)
+  parser.add_argument('-n', '--num', type=int, help='specify the number of definitions to display', default=1)
   parser.add_argument('-a', '--all', action='store_true', help='display the first page of definitions for the provided term')
   parser.add_argument('-w', '--wotd', action='store_true', help='display the definition for the word of the day')
   parser.add_argument('-v', '--version', action='version', version='v1.0.0', help='show the program version number and exit')
@@ -52,7 +54,7 @@ def parse_options(args):
 def generate_url(args):
   url = 'https://www.urbandictionary.com/'
   if args.search:
-    url += 'define.php?term='+args.search
+    url += 'define.php?term='+''.join(args.search)
   return url
 
 
@@ -73,20 +75,20 @@ def scrape_term(url, index):
 """ Formats and colors program output """
 def form(term):
   if 'linux' or 'darwin' in sys.platform:
-    term[0] = Fore.MAGENTA+' \nWord: '+Style.RESET_ALL+term[0]
+    term[0] = Fore.RED+' DWord: '+Style.RESET_ALL+term[0]
     term[1] = Fore.YELLOW+' Def: '+Style.RESET_ALL+term[1]
     term[2] = Fore.CYAN+' Ex: '+Style.RESET_ALL+term[2]
-  return '\n'.join(term)
+  return '\n'.join(term)+'\n'
 
 
 """ Removes remaining HTML tags from term information """
 def clean(term):
-  term = '\n\t\t'.join(term.split('<br/><br/>'))
+  term = '\n      '.join(term.split('<br/><br/>'))
   term = re.sub(re.compile('<.*?>'), '', term)
   term = term.replace('&amp;apos', '\'')
   term = html.unescape(html.unescape(term))
   if '\n' not in term:
-    term = '\n\t\t'.join(textwrap.wrap(term, 60, break_long_words=False))
+    term = '\n      '.join(textwrap.wrap(term, 60, break_long_words=False))
   if '\"\"' in term:
     term = '\"'.join(term.split('\"\"'))
   return term
