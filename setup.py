@@ -6,7 +6,7 @@ with open('README.md') as f:
 setuptools.setup(
   name = 'Urban Dictionary Therapy',
   version = '1.0.0',
-  description = 'A simple rehabilitation program for coping with long days',
+  description = 'A simple rehabilitation program for coping with long days of programming',
   long_description=long_description,
   long_description_content_type="text/markdown",
   author = 'Brett Stevenson',
