@@ -23,7 +23,7 @@ def parse_options(args):
   parser.add_argument('-n', '--num', type=int, help='specify the number of definitions to display', default=1)
   parser.add_argument('-a', '--all', action='store_true', help='display the first page of definitions for the provided term')
   parser.add_argument('-w', '--wotd', action='store_true', help='display the definition for the word of the day')
-  parser.add_argument('-v', '--version', action='version', version='v1.0.0', help='show the program version number and exit')
+  parser.add_argument('-v', '--version', action='version', version='v1.0.1', help='show the program version number and exit')
   return parser.parse_args(args)
 
 
