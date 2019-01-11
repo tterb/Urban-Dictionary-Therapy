@@ -17,6 +17,7 @@
 
 <p align="center">
   <img src="./docs/images/terminal.svg" width="700"/>
+  <!-- <img src="https://cloud.githubusercontent.com/assets/16360374/25802132/cfcd58de-33a5-11e7-8cf8-81f18f6f7af8.png" width="800"/> -->
 </p>
 
 ## Description:  
@@ -51,6 +52,7 @@ $ UDTherapy [-options]
 | `-v, --version` |  Display the program version number and exit     |
 | `-h, --help`    |  Display information on usage and functionality  |  
   
+<br>
 
 ## Contributing  
 If you'd like to contribute to the project, feel free to suggest a [feature request](./../../issues/new?template=feature_request.md) and/or submit a [pull request](./../../pulls?q=is%3Apr+is%3Aopen+sort%3Aupdated-desc).  
