@@ -18,7 +18,7 @@ from colorama import Fore, Style
 
 """ Parses command-line options """
 def parse_options(args):
-  parser = argparse.ArgumentParser(prog='Urban Dictionary Therapy', description='A simple rehabilitation program for coping with long days', usage='%(prog)s [options]', add_help=True)
+  parser = argparse.ArgumentParser(prog='Urban Dictionary Therapy', description='A simple rehabilitation program for coping with long days of programming', usage='%(prog)s [options]', add_help=True)
   parser.add_argument('-s', '--search', nargs='+', help='display the definition for the provided term', default='')
   parser.add_argument('-n', '--num', type=int, help='specify the number of definitions to display', default=1)
   parser.add_argument('-a', '--all', action='store_true', help='display the first page of definitions for the provided term')
