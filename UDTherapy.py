@@ -20,9 +20,9 @@ from colorama import init, Fore, Style
 
 def main(args):
   init()
-  term, index = [], 6
   args = parse_options(args)
   url = generate_url(args)
+  term, index = list(), args.num
   if args.num and args.num < 6:
     index = args.num
   if args.wotd:
@@ -32,17 +32,19 @@ def main(args):
   else:
     term.append(scrape_term(url, randrange(index)))
   if not len(term) and args.search:
-    print("I'm sorry, there is no data for the given term")
+    print('I\'m sorry, there is no data for the given term')
     sys.exit()
   [print(form(line)) for line in term]
 
 
+""" Parses command-line options """
 def parse_options(args):
-  parser = argparse.ArgumentParser(prog='Urban Dictionary Therapy', description='A simple rehabilitation program for coping with those long days', usage='%(prog)s [options]', add_help=True)
-  parser.add_argument('-s', '--search', help='Returns the definition for the provided term')
-  parser.add_argument('-n', '--num', type=int, help='Returns (n) definitions for the provided term')
-  parser.add_argument('-a', '--all', action='store_true', help='Returns the first page of definitions for the provided term')
-  parser.add_argument('-w', '--wotd', action='store_true', help='Returns the definition for the word of the day')
+  parser = argparse.ArgumentParser(prog='Urban Dictionary Therapy', description='A simple rehabilitation program for coping with long days', usage='%(prog)s [options]', add_help=True)
+  parser.add_argument('-s', '--search', nargs='+', help='display the definition for the provided term', default='')
+  parser.add_argument('-n', '--num', type=int, help='specify the number of definitions to display', default=6)
+  parser.add_argument('-a', '--all', action='store_true', help='display the first page of definitions for the provided term')
+  parser.add_argument('-w', '--wotd', action='store_true', help='display the definition for the word of the day')
+  parser.add_argument('-v', '--version', action='version', version='v1.0.0', help='show the program version number and exit')
   return parser.parse_args(args)
 
 
@@ -57,7 +59,7 @@ def generate_url(args):
 """ Retrieves data for the term at the given index """
 def scrape_term(url, index):
   term = []
-  soup = BeautifulSoup(request.urlopen(request.Request(url)), "html.parser")
+  soup = BeautifulSoup(request.urlopen(request.Request(url)), 'html.parser')
   if not len(results):
     return None
   elif index >= len(results):
@@ -70,7 +72,7 @@ def scrape_term(url, index):
 
 """ Formats and colors program output """
 def form(term):
-  if "linux" or "darwin" in sys.platform:
+  if 'linux' or 'darwin' in sys.platform:
     term[0] = Fore.MAGENTA+' \nWord: '+Style.RESET_ALL+term[0]
     term[1] = Fore.YELLOW+' Def: '+Style.RESET_ALL+term[1]
     term[2] = Fore.CYAN+' Ex: '+Style.RESET_ALL+term[2]
@@ -84,7 +86,7 @@ def clean(term):
   term = term.replace('&amp;apos', '\'')
   term = html.unescape(html.unescape(term))
   if '\n' not in term:
-    term = '\n      '.join(textwrap.wrap(term, 60, break_long_words=False))
+    term = '\n\t\t'.join(textwrap.wrap(term, 60, break_long_words=False))
   if '\"\"' in term:
     term = '\"'.join(term.split('\"\"'))
   return term
