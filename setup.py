@@ -4,7 +4,7 @@ with open('README.md') as f:
   long_description = f.read()
 
 setuptools.setup(
-  name = 'Urban Dictionary Therapy',
+  name = 'UDTherapy',
   version = '1.0.0',
   description = 'A simple rehabilitation program for coping with long days of programming',
   long_description=long_description,
@@ -20,7 +20,7 @@ setuptools.setup(
   tests_require=['pytest'],
   install_requires=[
     'colorama==0.4.1',
-    'beautifulsoup4==4.7.1',
+    'beautifulsoup4==4.6.3',
   ],
   classifiers = [
     'Development Status :: 4 - Beta',
