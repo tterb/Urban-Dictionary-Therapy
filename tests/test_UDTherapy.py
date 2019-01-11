@@ -20,7 +20,7 @@ def test_data():
 
 def test_arguments():
   args = helper.parse_options(['-s','udt','-n','3'])
-  assert (args.search == 'udt' and args.num == 3) and not (args.all and args.wotd)
+  assert (' '.join(args.search) == 'udt' and args.num == 3) and not (args.all and args.wotd)
 
 def test_generate_url(test_data):
   args = helper.parse_options(test_data['opts'])
